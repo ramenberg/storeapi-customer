@@ -1,0 +1,28 @@
+POST http://localhost:8081/customers
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "ssn": "6421"
+}
+
+###
+POST http://localhost:8081/customers
+Content-Type: application/json
+
+{
+  "firstName": "Sven"
+}
+
+###
+POST http://localhost:8081/customers
+Content-Type: application/json
+
+{
+  "firstName": "Annie",
+  "lastName": "Svensson",
+  "ssn": "5891"
+}
+
+###
