@@ -1,36 +1,33 @@
-version: "1"
-services:
-
-  customer-db:
-    image: mysql:latest
-    networks:
-      - storenetwork
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
-  customer-app:
-    image: customer-app:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - DB_PASSWORD=${DB_PASSWORD}
-    networks:
-      - storenetwork
-    ports:
-      - 8081:8081
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQL_HOST}:3306/${DB_DATABASE}?autoReconnect=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
-      SPRING_JPA_SHOW_SQL: true
-      SPRING_HIBERNATE_DDL_AUTO: none
-      SERVER_PORT: 8081
-    depends_on:
-      - customer-db
-
-networks:
-  storenetwork:
+#version: "1"
+#services:
+#
+#  customer-db:
+#    image: mysql
+#    env_file:
+#      - .env
+#    networks:
+#      - storenetwork
+#    ports:
+#      - 3306:3306
+#
+#  customer-app:
+#    image: customer-image
+#    env_file:
+#      - .env
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      args:
+#        - DB_URL=jdbc:mysql://localhost:3306/customerdb?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+#        - DB_DATABASE=customerdb
+#        - DB_USER=customeruser
+#        - DB_PASSWORD=${DB_PASSWORD}
+#    networks:
+#      - storenetwork
+#    ports:
+#      - 8081:8081
+#    depends_on:
+#      - customer-db
+#
+#networks:
+#  storenetwork:
