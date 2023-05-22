@@ -2,7 +2,7 @@ version: "1"
 services:
 
   customer-db:
-    image: mysql
+    image: mysql:latest
     networks:
       - storenetwork
     ports:
@@ -11,6 +11,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
   customer-app:
+    image: customer-app:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,6 +21,14 @@ services:
       - storenetwork
     ports:
       - 8081:8081
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://customer-db:3306/customerdb?autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: customeruser
+      SPRING_DATASOURCE_PASSWORD: customerpassword
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_SHOW_SQL: true
+      SPRING_HIBERNATE_DDL_AUTO: none
+      SERVER_PORT: 8081
     depends_on:
       - customer-db
 
