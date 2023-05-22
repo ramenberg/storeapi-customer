@@ -1,20 +1,27 @@
 version: "1"
 services:
-  mysql:
-    image: customerdb
-    environment:
-      - MYSQL_ROOT_PASSWORD=yourpassword
-    networks:
-      - customernetwork
 
-  springboot:
-    image: customer
+  customer-db:
+    image: mysql
+    networks:
+      - storenetwork
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+  customer-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DB_PASSWORD=${DB_PASSWORD}
+    networks:
+      - storenetwork
     ports:
       - 8081:8081
-    networks:
-      - customernetwork
+    depends_on:
+      - customer-db
 
 networks:
-  customernetwork:
-  itemsnetwork:
-  ordersnetwork:
+  storenetwork:
