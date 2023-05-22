@@ -22,9 +22,9 @@ services:
     ports:
       - 8081:8081
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://customer-db:3306/customerdb?autoReconnect=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: customeruser
-      SPRING_DATASOURCE_PASSWORD: customerpassword
+      SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQL_HOST}:3306/${DB_DATABASE}?autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_SHOW_SQL: true
       SPRING_HIBERNATE_DDL_AUTO: none
