@@ -1,33 +1,38 @@
-#version: "1"
-#services:
-#
-#  customer-db:
-#    image: mysql
-#    env_file:
-#      - .env
-#    networks:
-#      - storenetwork
-#    ports:
-#      - 3306:3306
-#
-#  customer-app:
-#    image: customer-image
-#    env_file:
-#      - .env
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#      args:
-#        - DB_URL=jdbc:mysql://localhost:3306/customerdb?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-#        - DB_DATABASE=customerdb
-#        - DB_USER=customeruser
-#        - DB_PASSWORD=${DB_PASSWORD}
-#    networks:
-#      - storenetwork
-#    ports:
-#      - 8081:8081
-#    depends_on:
-#      - customer-db
-#
-#networks:
-#  storenetwork:
+version: "3.9"
+services:
+  customer-db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: customerdb
+      MYSQL_USER: customeruser
+      MYSQL_PASSWORD: INSERTPASSWORD
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - storenetwork
+
+  customer-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DB_PASSWORD=INSERTPASSWORD
+    image: customer-image
+    ports:
+      - "8081:8081"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_HOST: customer-db
+      DB_DATABASE: customerdb
+      DB_USER: customeruser
+      DB_PASSWORD: INSERTPASSWORD
+    networks:
+      - storenetwork
+    depends_on:
+      - customer-db
+
+networks:
+  storenetwork:

@@ -6,6 +6,7 @@ build/
 !**/src/main/resources/application.properties
 !**/src/main/resources/application.yaml
 .env
+!**/src/main/**/*.env
 !**/src/main/**/.env
 !**/src/main/**/docker-compose.yml
 docker-compose.yml
