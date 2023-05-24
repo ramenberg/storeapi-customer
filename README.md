@@ -27,5 +27,7 @@ docker-compose up -d
 ENDPOINTS:
 
 GET /customers - Lista över alla customers
+
 GET /customers/{id} - Returnernar kund utifrån id
-PORT /customers - skicka in ny Customer med @RequestBody: firstName, lastName, ssn.
+
+POST /customers - skicka in ny Customer med @RequestBody: firstName, lastName, ssn.
