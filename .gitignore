@@ -8,8 +8,8 @@ build/
 .env
 !**/src/main/**/*.env
 !**/src/main/**/.env
-!**/src/main/**/docker-compose.yml
-docker-compose.yml
+#!**/src/main/**/docker-compose.yml
+#docker-compose.yml
 
 ### STS ###
 .apt_generate
