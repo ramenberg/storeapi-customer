@@ -1,38 +1,41 @@
 version: "3.9"
-services:
-  customer-db:
-    image: mysql:latest
-    environment:
-      MYSQL_DATABASE: customerdb
-      MYSQL_USER: customeruser
-      MYSQL_PASSWORD: INSERTPASSWORD
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-    ports:
-      - "3306:3306"
-    networks:
-      - storenetwork
-
-  customer-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - DB_PASSWORD=INSERTPASSWORD
-    image: customer-image
-    ports:
-      - "8081:8081"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_HOST: customer-db
-      DB_DATABASE: customerdb
-      DB_USER: customeruser
-      DB_PASSWORD: INSERTPASSWORD
-    networks:
-      - storenetwork
-    depends_on:
-      - customer-db
 
 networks:
   storenetwork:
+
+services:
+  storeapi_customer_db:
+    restart: unless-stopped
+    image: mysql:latest
+    environment:
+      MYSQL_HOST: storeapi_customer_db
+      MYSQL_DATABASE: customerdb
+      MYSQL_USER: customeruser
+      MYSQL_PASSWORD: PWD
+      MYSQL_ROOT_PASSWORD: ROOTCUSTOMERPWD
+      MYSQL_CHARSET: utf8
+      MYSQL_COLLATION: utf8_general_ci
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "3307:3306"
+    networks:
+      - storenetwork
+
+  storeapi_customer_app:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/ramenberg/storeapi_customer_image:latest
+    ports:
+      - "8081:8080"
+    environment:
+        MYSQL_HOST: storeapi_customer_db
+        DB_DATABASE: customerdb
+        DB_USER: customeruser
+        DB_PASSWORD: PWD
+    networks:
+      - storenetwork
+    depends_on:
+      - storeapi_customer_db
