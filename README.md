@@ -22,3 +22,10 @@ docker run -d --name customer-app -p 8081:8080 --network=storenetwork -e MYSQL_R
 COMPOSE:
 
 docker-compose up -d
+
+
+ENDPOINTS:
+
+GET /customers - Lista över alla customers
+GET /customers/{id} - Returnernar kund utifrån id
+PORT /customers - skicka in ny Customer med @RequestBody: firstName, lastName, ssn.
