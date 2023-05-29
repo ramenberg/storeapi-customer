@@ -3,9 +3,17 @@ package com.example.storeapi_customer.Controllers;
 import com.example.storeapi_customer.Models.Customer;
 import com.example.storeapi_customer.Repos.CustomerRepo;
 import com.example.storeapi_customer.Exceptions.CustomerNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @RestController
@@ -13,22 +21,19 @@ public class CustomerController {
 
     private final Logger log = Logger.getLogger(CustomerController.class.getName());
     private final CustomerRepo customerRepo;
+    private final RestTemplate restTemplate;
 
-    public CustomerController(CustomerRepo customerRepo) {
+    public CustomerController(CustomerRepo customerRepo, RestTemplate restTemplate) {
         this.customerRepo = customerRepo;
+        this.restTemplate = restTemplate;
     }
+
     @GetMapping("/customers")
     public List<Customer> all() {
         return customerRepo.findAll();
     }
 
-    @GetMapping("/customers/{id}")
-    public Customer one(@PathVariable Long id) throws CustomerNotFoundException {
-        log.info("GET /customers/" + id);
-        return customerRepo.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
-    }
-
-    @PostMapping("/customers")
+    @PostMapping("/customers/add")
     public Customer newCustomer(@RequestBody Customer newCustomer) {
         // Kontrollera att alla fält är ifyllda
         if (customerDoesNotHaveAllRequiredFields(newCustomer)) {
